@@ -6,16 +6,20 @@
 <title>Course Rating</title>
 <style>
   :root {
-    --accent: #00e28a;
-    --bg: #1a1a1a;
-    --text: #ffffff;
-    --star-inactive: #3a3a3a;
+    --accent: #41D198;
+    --accent-hover: #5FE0AC;
+    --page-bg: linear-gradient(90deg, #173544 0%, #17383E 100%);
+    --bg: #1C4250;
+    --text: #FFFFFF;
+    --btn-text: #1A2B33;
+    --star-inactive: #2E5A68;
+    --error: #FF8A80;
   }
   * { box-sizing: border-box; }
   html, body {
     margin: 0;
     padding: 0;
-    background: #1f1f1f;
+    background: var(--page-bg);
     font-family: "Segoe UI", Arial, sans-serif;
     display: flex;
     align-items: center;
@@ -30,7 +34,7 @@
     text-align: center;
     max-width: 420px;
     width: 100%;
-    box-shadow: 0 0 18px rgba(0, 226, 138, 0.15);
+    box-shadow: 0 0 18px rgba(65, 209, 152, 0.18);
   }
   .card h2 {
     color: var(--text);
@@ -58,16 +62,16 @@
   }
   .submit-btn {
     background: var(--accent);
-    color: #1f1f1f;
+    color: var(--btn-text);
     border: none;
     border-radius: 8px;
     padding: 12px 28px;
     font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    transition: opacity 0.15s ease, transform 0.1s ease;
+    transition: background 0.15s ease, transform 0.1s ease;
   }
-  .submit-btn:hover { opacity: 0.9; }
+  .submit-btn:hover { background: var(--accent-hover); }
   .submit-btn:active { transform: scale(0.97); }
   .submit-btn:disabled {
     opacity: 0.5;
@@ -79,7 +83,7 @@
     color: var(--accent);
     min-height: 18px;
   }
-  .status.error { color: #ff6b6b; }
+  .status.error { color: var(--error); }
 </style>
 </head>
 <body>
@@ -87,11 +91,11 @@
   <div class="card">
     <h2>How valuable was this course?</h2>
     <div class="stars" id="stars">
-      <span class="star" data-value="1">&#9733;</span>
-      <span class="star" data-value="2">&#9733;</span>
-      <span class="star" data-value="3">&#9733;</span>
-      <span class="star" data-value="4">&#9733;</span>
-      <span class="star" data-value="5">&#9733;</span>
+      <span class="star" data-value="1">★</span>
+      <span class="star" data-value="2">★</span>
+      <span class="star" data-value="3">★</span>
+      <span class="star" data-value="4">★</span>
+      <span class="star" data-value="5">★</span>
     </div>
     <button class="submit-btn" id="submitBtn">Submit Feedback</button>
     <div class="status" id="status"></div>
@@ -99,10 +103,10 @@
 
 <script>
   // Power Automate HTTP trigger URL
-  const SUBMIT_URL = "https://0458ee4aa906e0628640d9914f2d48.4c.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/23/workflows/79598760d6c1456f890bd675b84860f7/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=yI5chaaQfEF65TVd4DxT9AalqzWnvvko-KLP1DEw5Cc";
+  const SUBMIT_URL = "https://0458ee4aa906e0628640d9914f2d48.4c.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/22/workflows/c2229fe337864ab3937ca77be724c43e/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=aeTkKsM9CgLIgeuiHe6opQbpC2MPnsme-UZpqIRIvQc";
 
-  // Gets the SharePoint page title
-  const PAGE_NAME = "AI in Marketing";
+  // SharePoint page name
+  const PAGE_NAME = "Paid Media - Paid and Organic Search Combination";
 
   let selectedRating = 0;
   const starEls = document.querySelectorAll(".star");
@@ -120,11 +124,9 @@
     star.addEventListener("mouseenter", () => {
       paintStars(parseInt(star.dataset.value, 10));
     });
-
     star.addEventListener("mouseleave", () => {
       paintStars(selectedRating);
     });
-
     star.addEventListener("click", () => {
       selectedRating = parseInt(star.dataset.value, 10);
       paintStars(selectedRating);
@@ -132,7 +134,6 @@
   });
 
   submitBtn.addEventListener("click", async () => {
-
     if (!selectedRating) {
       statusEl.textContent = "Please select a star rating first.";
       statusEl.classList.add("error");
@@ -150,12 +151,9 @@
     };
 
     try {
-
       const response = await fetch(SUBMIT_URL, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
 
@@ -167,14 +165,12 @@
       submitBtn.textContent = "Submitted";
 
     } catch (error) {
-
       statusEl.textContent = "Something went wrong. Please try again.";
       statusEl.classList.add("error");
       submitBtn.disabled = false;
-
       console.error(error);
     }
-
   });
 </script>
-
+</body>
+</html>
