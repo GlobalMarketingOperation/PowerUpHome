@@ -8,8 +8,6 @@
   :root {
     --accent: #41D198;
     --accent-hover: #5FE0AC;
-    --page-bg: linear-gradient(90deg, #173544 0%, #17383E 100%);
-    --bg: #1C4250;
     --text: #FFFFFF;
     --btn-text: #1A2B33;
     --star-inactive: #2E5A68;
@@ -19,39 +17,39 @@
   html, body {
     margin: 0;
     padding: 0;
-    background: transparent;;
+    background: transparent;
     font-family: "Segoe UI", Arial, sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100%;
   }
- .card {
+  .card {
     background: rgba(255,255,255,0.03);
-    border: 2px solid #41D198;
-    border-radius: 12px;
-    padding: 28px 36px;
+    border: 1px solid var(--accent);
+    border-radius: 8px;
+    padding: 14px 18px;
     text-align: center;
-    max-width: 420px;
+    max-width: 260px;
     width: 100%;
-    box-shadow: 0 0 12px rgba(65, 209, 152, 0.15);
+    box-shadow: 0 0 6px rgba(65, 209, 152, 0.15);
     backdrop-filter: blur(4px);
-}
-  
-.card h2 {
-    color: rgb(255, 255, 255);
-    font-size: 20px;
-    margin: 0 0 20px 0;
+  }
+  .card h2 {
+    color: var(--text);
+    font-size: 13px;
+    line-height: 1.35;
+    margin: 0 0 10px 0;
     font-weight: 600;
-}
+  }
   .stars {
     display: flex;
     justify-content: center;
-    gap: 10px;
-    margin-bottom: 22px;
+    gap: 5px;
+    margin-bottom: 11px;
   }
   .star {
-    font-size: 40px;
+    font-size: 22px;
     line-height: 1;
     color: var(--star-inactive);
     cursor: pointer;
@@ -67,24 +65,21 @@
     background: var(--accent);
     color: var(--btn-text);
     border: none;
-    border-radius: 8px;
-    padding: 12px 28px;
-    font-size: 15px;
+    border-radius: 5px;
+    padding: 6px 14px;
+    font-size: 12px;
     font-weight: 600;
     cursor: pointer;
     transition: background 0.15s ease, transform 0.1s ease;
   }
   .submit-btn:hover { background: var(--accent-hover); }
   .submit-btn:active { transform: scale(0.97); }
-  .submit-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
+  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
   .status {
-    margin-top: 14px;
-    font-size: 14px;
+    margin-top: 7px;
+    font-size: 11px;
     color: var(--accent);
-    min-height: 18px;
+    min-height: 14px;
   }
   .status.error { color: var(--error); }
 </style>
@@ -124,12 +119,8 @@
   }
 
   starEls.forEach(star => {
-    star.addEventListener("mouseenter", () => {
-      paintStars(parseInt(star.dataset.value, 10));
-    });
-    star.addEventListener("mouseleave", () => {
-      paintStars(selectedRating);
-    });
+    star.addEventListener("mouseenter", () => paintStars(parseInt(star.dataset.value, 10)));
+    star.addEventListener("mouseleave", () => paintStars(selectedRating));
     star.addEventListener("click", () => {
       selectedRating = parseInt(star.dataset.value, 10);
       paintStars(selectedRating);
@@ -159,14 +150,10 @@
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
-
-      if (!response.ok) {
-        throw new Error("Request failed");
-      }
+      if (!response.ok) throw new Error("Request failed");
 
       statusEl.textContent = "Thanks for your feedback!";
       submitBtn.textContent = "Submitted";
-
     } catch (error) {
       statusEl.textContent = "Something went wrong. Please try again.";
       statusEl.classList.add("error");
