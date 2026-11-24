@@ -8,95 +8,183 @@
   :root {
     --accent: #41D198;
     --accent-hover: #5FE0AC;
+    --accent-soft: rgba(65, 209, 152, 0.12);
     --text: #FFFFFF;
+    --text-muted: #B8C4C9;
     --btn-text: #1A2B33;
-    --star-inactive: #2E5A68;
+    --star-inactive: #3A4F57;
     --error: #FF8A80;
+    --card-bg: #262626;
   }
   * { box-sizing: border-box; }
   html, body {
     margin: 0;
     padding: 0;
+    height: 100%;
     background: transparent;
     font-family: "Segoe UI", Arial, sans-serif;
+  }
+  body {
     display: flex;
-    align-items: center;
+    align-items: stretch;
     justify-content: center;
-    min-height: 100%;
+    padding: 4px;
   }
   .card {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--accent);
-    border-radius: 12px;
-    padding: 14px 18px;
-    text-align: center;
-    max-width: 390px;
     width: 100%;
-    box-shadow: 0 0 6px rgba(65, 209, 152, 0.15);
-    backdrop-filter: blur(4px);
+    max-width: 560px;
+    min-height: 100%;
+    background: var(--card-bg);
+    border: 1px solid rgba(65, 209, 152, 0.55);
+    border-radius: 10px;
+    padding: 32px 36px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 0 18px rgba(65, 209, 152, 0.10);
+    position: relative;
+    overflow: hidden;
+  }
+  /* Green accent bar on top */
+  .card::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 5px;
+    background: var(--accent);
+  }
+  .eyebrow {
+    display: inline-block;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin-bottom: 18px;
   }
   .card h2 {
     color: var(--text);
-    font-size: 19.5px;
+    font-size: 24px;
     line-height: 1.35;
-    margin: 0 0 10px 0;
+    margin: 0 0 8px 0;
     font-weight: 600;
+  }
+  .subtitle {
+    color: var(--text-muted);
+    font-size: 15px;
+    margin: 0 0 24px 0;
   }
   .stars {
     display: flex;
     justify-content: center;
-    gap: 5px;
-    margin-bottom: 11px;
+    gap: 10px;
+    margin-bottom: 8px;
   }
   .star {
-    font-size: 22px;
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 44px;
     line-height: 1;
     color: var(--star-inactive);
     cursor: pointer;
     transition: color 0.15s ease, transform 0.15s ease;
-    user-select: none;
   }
-  .star.active,
-  .star.hover {
+  .star:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
+    border-radius: 4px;
+  }
+  .star.active {
     color: var(--accent);
-    transform: scale(1.08);
+    transform: scale(1.1);
+  }
+  .rating-label {
+    color: var(--accent);
+    font-size: 15px;
+    font-weight: 600;
+    min-height: 22px;
+    margin-bottom: 22px;
   }
   .submit-btn {
+    width: 100%;
+    max-width: 320px;
     background: var(--accent);
     color: var(--btn-text);
     border: none;
-    border-radius: 5px;
-    padding: 13.5px 31.5px;
-    font-size: 18px;
-    font-weight: 600;
+    border-radius: 6px;
+    padding: 15px 24px;
+    font-size: 17px;
+    font-weight: 700;
     cursor: pointer;
     transition: background 0.15s ease, transform 0.1s ease;
   }
   .submit-btn:hover { background: var(--accent-hover); }
-  .submit-btn:active { transform: scale(0.97); }
+  .submit-btn:active { transform: scale(0.98); }
   .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
   .status {
-    margin-top: 7px;
-    font-size: 16.5px;
+    margin-top: 12px;
+    font-size: 15px;
     color: var(--accent);
-    min-height: 14px;
+    min-height: 20px;
   }
   .status.error { color: var(--error); }
+
+  /* Thank-you state */
+  .thanks { display: none; }
+  .card.done .form { display: none; }
+  .card.done .thanks { display: block; }
+  .thanks .check {
+    width: 72px; height: 72px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: var(--btn-text);
+    font-size: 38px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 18px;
+  }
+  .thanks h2 { margin-bottom: 8px; }
+
+  /* Smaller screens */
+  @media (max-width: 480px) {
+    .card { padding: 24px 18px; }
+    .card h2 { font-size: 20px; }
+    .star { font-size: 36px; }
+  }
 </style>
 </head>
 <body>
 
-  <div class="card">
-    <h2>How valuable is this Power-Up program to your professional development?</h2>
-    <div class="stars" id="stars">
-      <span class="star" data-value="1">★</span>
-      <span class="star" data-value="2">★</span>
-      <span class="star" data-value="3">★</span>
-      <span class="star" data-value="4">★</span>
-      <span class="star" data-value="5">★</span>
+  <div class="card" id="card">
+    <div class="form">
+      <span class="eyebrow">Your feedback</span>
+      <h2>How valuable is this Power-Up program to your professional development?</h2>
+      <p class="subtitle">Rate from 1 to 5 stars. It only takes a second.</p>
+
+      <div class="stars" id="stars" role="radiogroup" aria-label="Rating">
+        <button type="button" class="star" data-value="1" aria-label="1 star">★</button>
+        <button type="button" class="star" data-value="2" aria-label="2 stars">★</button>
+        <button type="button" class="star" data-value="3" aria-label="3 stars">★</button>
+        <button type="button" class="star" data-value="4" aria-label="4 stars">★</button>
+        <button type="button" class="star" data-value="5" aria-label="5 stars">★</button>
+      </div>
+      <div class="rating-label" id="ratingLabel"></div>
+
+      <button type="button" class="submit-btn" id="submitBtn">Submit Feedback</button>
+      <div class="status" id="status" aria-live="polite"></div>
     </div>
-    <button class="submit-btn" id="submitBtn">Submit Feedback</button>
-    <div class="status" id="status"></div>
+
+    <div class="thanks" aria-live="polite">
+      <div class="check">✓</div>
+      <h2>Thanks for your feedback!</h2>
+      <p class="subtitle">Your rating helps us make Power-Up even better.</p>
+    </div>
   </div>
 
 <script>
@@ -106,23 +194,39 @@
   // SharePoint page name
   const PAGE_NAME = "Power-Up Home Page";
 
+  const LABELS = {
+    1: "Not valuable",
+    2: "Slightly valuable",
+    3: "Valuable",
+    4: "Very valuable",
+    5: "Extremely valuable"
+  };
+
   let selectedRating = 0;
+  const card = document.getElementById("card");
   const starEls = document.querySelectorAll(".star");
   const submitBtn = document.getElementById("submitBtn");
   const statusEl = document.getElementById("status");
+  const ratingLabel = document.getElementById("ratingLabel");
 
   function paintStars(value) {
     starEls.forEach(star => {
       const v = parseInt(star.dataset.value, 10);
       star.classList.toggle("active", v <= value);
+      star.setAttribute("aria-checked", v === selectedRating ? "true" : "false");
     });
+    ratingLabel.textContent = value ? LABELS[value] : "";
   }
 
   starEls.forEach(star => {
-    star.addEventListener("mouseenter", () => paintStars(parseInt(star.dataset.value, 10)));
+    const v = parseInt(star.dataset.value, 10);
+    star.setAttribute("role", "radio");
+    star.addEventListener("mouseenter", () => paintStars(v));
     star.addEventListener("mouseleave", () => paintStars(selectedRating));
     star.addEventListener("click", () => {
-      selectedRating = parseInt(star.dataset.value, 10);
+      selectedRating = v;
+      statusEl.textContent = "";
+      statusEl.classList.remove("error");
       paintStars(selectedRating);
     });
   });
@@ -152,8 +256,7 @@
       });
       if (!response.ok) throw new Error("Request failed");
 
-      statusEl.textContent = "Thanks for your feedback!";
-      submitBtn.textContent = "Submitted";
+      card.classList.add("done");
     } catch (error) {
       statusEl.textContent = "Something went wrong. Please try again.";
       statusEl.classList.add("error");
