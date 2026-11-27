@@ -19,161 +19,18 @@
   html, body {
     margin: 0;
     padding: 0;
-    background: transparent;;
+    background: transparent;
     font-family: "Segoe UI", Arial, sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
     min-height: 100%;
   }
- .card {
+
+  .card {
     background: rgba(255,255,255,0.03);
-    border: 2px solid #41D198;
-    border-radius: 12px;
-    padding: 28px 36px;
+    border: 1.5px solid #41D198;
+    border-radius: 9px;
+    padding: 21px 27px;
     text-align: center;
-    max-width: 420px;
-    width: 100%;
-    box-shadow: 0 0 12px rgba(65, 209, 152, 0.15);
-    backdrop-filter: blur(4px);
-}
-  
-.card h2 {
-    color: rgb(255, 255, 255);
-    font-size: 20px;
-    margin: 0 0 20px 0;
-    font-weight: 600;
-}
-  .stars {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 22px;
-  }
-  .star {
-    font-size: 40px;
-    line-height: 1;
-    color: var(--star-inactive);
-    cursor: pointer;
-    transition: color 0.15s ease, transform 0.15s ease;
-    user-select: none;
-  }
-  .star.active,
-  .star.hover {
-    color: var(--accent);
-    transform: scale(1.08);
-  }
-  .submit-btn {
-    background: var(--accent);
-    color: var(--btn-text);
-    border: none;
-    border-radius: 8px;
-    padding: 12px 28px;
-    font-size: 15px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.15s ease, transform 0.1s ease;
-  }
-  .submit-btn:hover { background: var(--accent-hover); }
-  .submit-btn:active { transform: scale(0.97); }
-  .submit-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  .status {
-    margin-top: 14px;
-    font-size: 14px;
-    color: var(--accent);
-    min-height: 18px;
-  }
-  .status.error { color: var(--error); }
-</style>
-</head>
-<body>
-
-  <div class="card">
-    <h2>How valuable is this Power-Up program to your professional development?</h2>
-    <div class="stars" id="stars">
-      <span class="star" data-value="1">★</span>
-      <span class="star" data-value="2">★</span>
-      <span class="star" data-value="3">★</span>
-      <span class="star" data-value="4">★</span>
-      <span class="star" data-value="5">★</span>
-    </div>
-    <button class="submit-btn" id="submitBtn">Submit Feedback</button>
-    <div class="status" id="status"></div>
-  </div>
-
-<script>
-  // Power Automate HTTP trigger URL
-  const SUBMIT_URL = "https://0458ee4aa906e0628640d9914f2d48.4c.environment.api.powerplatform.com:443/powerautomate/automations/direct/cu/22/workflows/c2229fe337864ab3937ca77be724c43e/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=aeTkKsM9CgLIgeuiHe6opQbpC2MPnsme-UZpqIRIvQc";
-
-  // SharePoint page name
-  const PAGE_NAME = "Power-Up Home Page";
-
-  let selectedRating = 0;
-  const starEls = document.querySelectorAll(".star");
-  const submitBtn = document.getElementById("submitBtn");
-  const statusEl = document.getElementById("status");
-
-  function paintStars(value) {
-    starEls.forEach(star => {
-      const v = parseInt(star.dataset.value, 10);
-      star.classList.toggle("active", v <= value);
-    });
-  }
-
-  starEls.forEach(star => {
-    star.addEventListener("mouseenter", () => {
-      paintStars(parseInt(star.dataset.value, 10));
-    });
-    star.addEventListener("mouseleave", () => {
-      paintStars(selectedRating);
-    });
-    star.addEventListener("click", () => {
-      selectedRating = parseInt(star.dataset.value, 10);
-      paintStars(selectedRating);
-    });
-  });
-
-  submitBtn.addEventListener("click", async () => {
-    if (!selectedRating) {
-      statusEl.textContent = "Please select a star rating first.";
-      statusEl.classList.add("error");
-      return;
-    }
-
-    submitBtn.disabled = true;
-    statusEl.classList.remove("error");
-    statusEl.textContent = "Submitting...";
-
-    const payload = {
-      pageName: PAGE_NAME,
-      rating: selectedRating,
-      submittedAt: new Date().toISOString()
-    };
-
-    try {
-      const response = await fetch(SUBMIT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
-
-      if (!response.ok) {
-        throw new Error("Request failed");
-      }
-
-      statusEl.textContent = "Thanks for your feedback!";
-      submitBtn.textContent = "Submitted";
-
-    } catch (error) {
-      statusEl.textContent = "Something went wrong. Please try again.";
-      statusEl.classList.add("error");
-      submitBtn.disabled = false;
-      console.error(error);
-    }
-  });
-</script>
-</body>
-</html>
+    max-width: 315px
