@@ -1,36 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Course Rating</title>
-<style>
-  :root {
-    --accent: #41D198;
-    --accent-hover: #5FE0AC;
-    --page-bg: linear-gradient(90deg, #173544 0%, #17383E 100%);
-    --bg: #1C4250;
-    --text: #FFFFFF;
-    --btn-text: #1A2B33;
-    --star-inactive: #2E5A68;
-    --error: #FF8A80;
-  }
-  * { box-sizing: border-box; }
-  html, body {
-    margin: 0;
-    padding: 0;
-    background: transparent;
-    font-family: "Segoe UI", Arial, sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100%;
-  }
-
-  .card {
+.card {
     background: rgba(255,255,255,0.03);
-    border: 1.5px solid #41D198;
-    border-radius: 9px;
-    padding: 21px 27px;
+    border: 2px solid #41D198;
+    border-radius: 12px;
+    padding: 28px 36px;
     text-align: center;
-    max-width: 315px
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 0 12px rgba(65, 209, 152, 0.15);
+    backdrop-filter: blur(4px);
+
+    /* Makes the component 25% smaller */
+    transform: scale(0.75);
+    transform-origin: center center;
+}
